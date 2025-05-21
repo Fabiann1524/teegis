@@ -1,0 +1,231 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: #fff3e0;
+    color: #333;
+}
+
+header {
+    background: #ffcc00;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.menu {
+    display: flex;
+    gap: 20px;
+}
+
+.menu a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.menu a:hover {
+    color: #ff6600;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1587&q=80') no-repeat center center/cover;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.hero * {
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+/* Buttons */
+.btn {
+    background: #ff6600;
+    padding: 12px 25px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.btn:hover {
+    background: #e65c00;
+}
+
+/* Products Grid */
+.productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.producto {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+}
+
+.producto img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.producto h3 {
+    margin: 10px 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.producto p {
+    font-size: 16px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.producto .precio {
+    font-size: 1.25em;
+    color: #ff6600;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+/* Shopping Cart */
+.carrito {
+    padding: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.carrito table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.carrito th, .carrito td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.carrito th {
+    background: #ff6600;
+    color: white;
+    font-weight: bold;
+}
+
+.carrito tr:hover {
+    background: #fff9f0;
+}
+
+/* Contact Page */
+.contacto {
+    text-align: center;
+    padding: 50px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contacto h1 {
+    font-size: 2.5em;
+    color: #ff6600;
+    margin-bottom: 30px;
+}
+
+.contacto p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.whatsapp {
+    background: #25D366;
+    padding: 12px 25px;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.whatsapp:hover {
+    background: #128C7E;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 36px;
+    }
+    
+    .productos {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        padding: 20px;
+    }
+    
+    .carrito table {
+        font-size: 14px;
+    }
+}

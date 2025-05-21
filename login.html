@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teegis - Iniciar Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6600;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-link a {
+            color: #ff6600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #28a745;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <h2>Teegis - Tienda de Zapatillas</h2>
+    </div>
+    <nav class="menu">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="carrito.html">Carrito 🛒</a>
+    </nav>
+</header>
+
+<div class="login-container">
+    <h2 style="text-align: center; margin-bottom: 30px;">Iniciar Sesión</h2>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+        <button type="submit" class="btn" style="width: 100%;">Iniciar Sesión</button>
+    </form>
+    <div class="register-link">
+        <p>¿No tienes una cuenta? <a onclick="showRegisterForm()">Regístrate aquí</a></p>
+    </div>
+</div>
+
+<script>
+// Check if user is already logged in
+const token = localStorage.getItem('token');
+if (token) {
+    const redirect = new URLSearchParams(window.location.search).get('redirect');
+    window.location.href = redirect || 'index.html';
+}
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+
+    try {
+        const response = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Error en el inicio de sesión');
+        }
+
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        successMessage.textContent = 'Inicio de sesión exitoso';
+        successMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+
+        // Redirect after successful login
+        setTimeout(() => {
+            const redirect = new URLSearchParams(window.location.search).get('redirect');
+            window.location.href = redirect || 'index.html';
+        }, 1000);
+
+    } catch (error) {
+        errorMessage.textContent = error.message;
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+    }
+});
+
+function showRegisterForm() {
+    const loginContainer = document.querySelector('.login-container');
+    loginContainer.innerHTML = `
+        <h2 style="text-align: center; margin-bottom: 30px;">Registro</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="regName">Nombre Completo</label>
+                <input type="text" id="regName" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Correo Electrónico</label>
+                <input type="email" id="regEmail" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Contraseña</label>
+                <input type="password" id="regPassword" name="password" required>
+            </div>
+            <div class="error-message" id="regErrorMessage"></div>
+            <div class="success-message" id="regSuccessMessage"></div>
+            <button type="submit" class="btn" style="width: 100%;">Registrarse</button>
+        </form>
+        <div class="register-link">
+            <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+        </div>
+    `;
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const errorMessage = document.getElementById('regErrorMessage');
+        const successMessage = document.getElementById('regSuccessMessage');
+
+        try {
+            const response = await fetch('http://localhost:3000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Error en el registro');
+            }
+
+            // Store token and user data
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+
+            successMessage.textContent = 'Registro exitoso';
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            // Redirect after successful registration
+            setTimeout(() => {
+                const redirect = new URLSearchParams(window.location.search).get('redirect');
+                window.location.href = redirect || 'index.html';
+            }, 1000);
+
+        } catch (error) {
+            errorMessage.textContent = error.message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            console.error('Error:', error);
+        }
+    });
+}
+</script>
+</body>
+</html>
